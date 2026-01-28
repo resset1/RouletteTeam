@@ -35,27 +35,32 @@ function App() {
       alert("¡Todos los equipos están llenos!");
       return;
     }
-    // Si ambos están vacíos, el primero va de cabeza al Team A
-    if (teamA.length === teamB.length) {
-      if (teamA.length < 5) {
-        setTeamA((prev) => [...prev, winnerName]);
-      } else {
-        // Por si acaso el A estuviera lleno pero el B no
-        setTeamB((prev) => [...prev, winnerName]);
+
+    const remaining = participants.filter((p) => p.option !== winnerName);
+    const lastPerson = remaining.length === 1 ? remaining[0].option : null;
+
+    let newTeamA = [...teamA];
+    let newTeamB = [...teamB];
+
+    const pushToNextTeam = (name: string) => {
+      if (newTeamA.length <= newTeamB.length && newTeamA.length < 5) {
+        newTeamA.push(name);
+      } else if (newTeamB.length < 5) {
+        newTeamB.push(name);
       }
-    }
-    // Si el Team A ya tiene más (ej: 1-0, 2-1), le toca al Team B
-    else {
-      if (teamB.length < 5) {
-        setTeamB((prev) => [...prev, winnerName]);
-      } else {
-        // Por si acaso el B estuviera lleno pero el A no
-        setTeamA((prev) => [...prev, winnerName]);
-      }
+    };
+
+    pushToNextTeam(winnerName);
+
+    if (lastPerson) {
+      pushToNextTeam(lastPerson);
+      setParticipants([]);
+    } else {
+      setParticipants(remaining);
     }
 
-    // Quitamos al seleccionado de la ruleta para que no se repita
-    setParticipants((prev) => prev.filter((p) => p.option !== winnerName));
+    setTeamA(newTeamA);
+    setTeamB(newTeamB);
   };
 
   return (
@@ -73,7 +78,10 @@ function App() {
         <div className="row g-4">
           <div className="col-12 col-lg-7">
             <div className="d-flex flex-column gap-4">
-              <AddParticipants onAdd={addParticipant} />
+              <AddParticipants
+                onAdd={addParticipant}
+                currentParticipant={participants.length}
+              />
               <Roulette
                 data={participants}
                 onWinner={handleWinner}

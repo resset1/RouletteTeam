@@ -36,7 +36,7 @@ const Roulette = ({ data, onWinner, onReset }: Props) => {
             }}
           />
         ) : (
-          <div className="text-muted py-5">Esperando participantes...</div>
+          <div className="text-secondary py-5">Esperando participantes...</div>
         )}
 
         <button

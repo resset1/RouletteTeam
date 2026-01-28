@@ -95,10 +95,10 @@ const TeamList: React.FC<TeamListProps> = ({ team, teamName, borderColor }) => {
               </>
             ) : (
               <span
-                className="text-muted small w-100 text-center"
-                style={{ opacity: 0.4, fontSize: "0.8rem" }}
+                className="text-secondary small w-100 text-center"
+                style={{ fontSize: "0.8rem", opacity: 0.5 }}
               >
-                VACANTE {index + 1}
+                MIEMBRO {index + 1}
               </span>
             )}
           </div>

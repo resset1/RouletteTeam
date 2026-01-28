@@ -3,15 +3,26 @@ import "./AddParticipants.css";
 
 interface Props {
   onAdd: (name: string) => void;
+  currentParticipant: number;
 }
 
-function AddParticipants({ onAdd }: Props) {
+function AddParticipants({ onAdd, currentParticipant }: Props) {
   const [name, setName] = useState<string>("");
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    onAdd(name);
-    setName("");
+
+    if (name.trim() === "") {
+      alert("Por favor, ingresa un nombre válido.");
+      return;
+    }
+
+    if (currentParticipant < 10) {
+      onAdd(name);
+      setName("");
+    } else {
+      alert("¡No puedes agregar más participantes!");
+    }
   };
 
   return (
