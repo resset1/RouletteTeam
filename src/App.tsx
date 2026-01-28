@@ -81,6 +81,7 @@ function App() {
               <AddParticipants
                 onAdd={addParticipant}
                 currentParticipant={participants.length}
+                nameParticipants={participants.map((p) => p.option)}
               />
               <Roulette
                 data={participants}

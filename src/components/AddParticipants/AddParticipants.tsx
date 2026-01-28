@@ -4,9 +4,14 @@ import "./AddParticipants.css";
 interface Props {
   onAdd: (name: string) => void;
   currentParticipant: number;
+  nameParticipants: string[];
 }
 
-function AddParticipants({ onAdd, currentParticipant }: Props) {
+function AddParticipants({
+  onAdd,
+  currentParticipant,
+  nameParticipants,
+}: Props) {
   const [name, setName] = useState<string>("");
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -17,12 +22,22 @@ function AddParticipants({ onAdd, currentParticipant }: Props) {
       return;
     }
 
-    if (currentParticipant < 10) {
-      onAdd(name);
-      setName("");
-    } else {
+    if (currentParticipant >= 10) {
       alert("¡No puedes agregar más participantes!");
+      return;
     }
+
+    const exists = nameParticipants.some(
+      (p) => p.toLowerCase() === name.trim().toLowerCase(),
+    );
+
+    if (exists) {
+      alert(`El nombre "${name}" ya está en la lista.`);
+      return;
+    }
+
+    onAdd(name);
+    setName("");
   };
 
   return (
